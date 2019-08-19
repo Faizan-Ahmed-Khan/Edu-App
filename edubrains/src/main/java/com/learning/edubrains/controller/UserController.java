@@ -21,6 +21,7 @@ import com.learning.edubrains.model.User;
 import com.learning.edubrains.service.IUserService;
 import com.learning.edubrains.utils.EduAppServiceException;
 import com.learning.edubrains.utils.ResponseObject;
+import com.learning.edubrains.utils.ValdatorUtils;
 
 @RestController
 @RequestMapping(value = "/services")
@@ -28,6 +29,9 @@ public class UserController {
 
 	@Autowired
 	private IUserService usrService;
+
+	@Autowired
+	private ValdatorUtils validator;
 
 	private Logger logger = LoggerFactory.getLogger(UserController.class);
 
@@ -56,8 +60,23 @@ public class UserController {
 	}
 
 	@GetMapping(value = "/user")
-	public User getUser(@RequestParam String userName) {
+	public ResponseEntity<ResponseObject> getUser(@RequestParam String userName) {
 		logger.info("Get User:: " + userName);
-		return usrService.getUser(userName);
+		ResponseObject resp = new ResponseObject();
+		if (validator.validateEmptyOrNull(userName)) {
+			User u = usrService.getUser(userName);
+			if (null == u) {
+				resp.setMessage("User Does not Exist");
+				resp.setStatusCode(HttpStatus.BAD_REQUEST);
+			} else {
+				resp.setMessage(u.toString());
+				resp.setStatusCode(HttpStatus.OK);
+			}
+			return ResponseEntity.ok(resp);
+		} else {
+			resp.setMessage("UserName cannot be null or Empty");
+			resp.setStatusCode(HttpStatus.BAD_REQUEST);
+			return ResponseEntity.badRequest().body(resp);
+		}
 	}
 }
