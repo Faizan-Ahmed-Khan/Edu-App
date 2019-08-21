@@ -7,4 +7,6 @@ public interface IUserService {
 	void addUser(User user);
 
 	User getUser(String userName);
+
+	User getLoggedInUser();
 }

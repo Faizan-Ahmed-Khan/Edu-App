@@ -12,6 +12,7 @@ public class SessionUser implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
+	// Needed for REDIS impl
 	private String id;
 
 	private String userName;

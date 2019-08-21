@@ -19,7 +19,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
-import com.learning.edubrains.model.SessionUser;
 import com.learning.edubrains.model.User;
 import com.learning.edubrains.repo.ISessionUserRepo;
 import com.learning.edubrains.service.IUserService;
@@ -73,8 +72,14 @@ public class UserController {
 
 		// Check if User has logged In
 		try {
-			SessionUser su = repo.findById(accessId).get();
-			logger.info("logged in user name:: " + su.getUserName());
+//			SessionUser su = repo.findById(accessId).get();
+//			logger.info("logged in user name:: " + su.getUserName());
+
+			User u = usrService.getLoggedInUser();
+			logger.info("logged in User:: " + u);
+
+			if (u == null)
+				throw new EduAppServiceException("User needs to be logged In");
 		} catch (NoSuchElementException ex) {
 			resp.setMessage("Invalid Credentials");
 			resp.setStatusCode(HttpStatus.BAD_REQUEST);

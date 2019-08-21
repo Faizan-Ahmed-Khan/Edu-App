@@ -9,6 +9,8 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.springframework.beans.factory.annotation.Autowired;
+
 import graphql.ExecutionResult;
 import graphql.GraphQL;
 import graphql.schema.GraphQLSchema;
@@ -23,12 +25,13 @@ import graphql.servlet.internal.GraphQLRequest;
 @WebServlet(urlPatterns = "/graphql")
 public class GraphQlEndPoint extends AbstractGraphQLHttpServlet {
 
+	@Autowired
 	private GraphQLSchema schemaConf;
 
-	public GraphQlEndPoint(GraphQLSchema schema) {
-		this.schemaConf = schema;
-		GraphQL.newGraphQL(schemaConf).build();
-	}
+//	public GraphQlEndPoint(GraphQLSchema schema) {
+//		this.schemaConf = schema;
+//		GraphQL.newGraphQL(schemaConf).build();
+//	}
 
 	// build new GraphQLQueryInvoker
 	@Override
