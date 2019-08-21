@@ -17,8 +17,10 @@ public class GraphQlConfig {
 
 	@Bean
 	public GraphQLSchema generateSchema() {
-		return new GraphQLSchemaGenerator().withBasePackages("com.learning.edubrains")
-				.withOperationsFromSingleton(userResolver).generate();
+		return new GraphQLSchemaGenerator()
+//				.withBasePackages("com.learning.edubrains")
+				.withOperationsFromSingleton(userResolver)
+				.generate();
 
 	}
 }

@@ -1,6 +1,7 @@
 package com.learning.edubrains.controller;
 
 import java.net.URI;
+import java.util.NoSuchElementException;
 
 import javax.validation.Valid;
 
@@ -12,12 +13,14 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.learning.edubrains.model.User;
+import com.learning.edubrains.repo.ISessionUserRepo;
 import com.learning.edubrains.service.IUserService;
 import com.learning.edubrains.utils.EduAppServiceException;
 import com.learning.edubrains.utils.ResponseObject;
@@ -32,6 +35,9 @@ public class UserController {
 
 	@Autowired
 	private ValdatorUtils validator;
+
+	@Autowired
+	ISessionUserRepo repo;
 
 	private Logger logger = LoggerFactory.getLogger(UserController.class);
 
@@ -60,9 +66,26 @@ public class UserController {
 	}
 
 	@GetMapping(value = "/user")
-	public ResponseEntity<ResponseObject> getUser(@RequestParam String userName) {
+	public ResponseEntity<ResponseObject> getUser(@RequestParam String userName, @RequestHeader String accessId) {
 		logger.info("Get User:: " + userName);
 		ResponseObject resp = new ResponseObject();
+
+		// Check if User has logged In
+		try {
+//			SessionUser su = repo.findById(accessId).get();
+//			logger.info("logged in user name:: " + su.getUserName());
+
+			User u = usrService.getLoggedInUser();
+			logger.info("logged in User:: " + u);
+
+			if (u == null)
+				throw new EduAppServiceException("User needs to be logged In");
+		} catch (NoSuchElementException ex) {
+			resp.setMessage("Invalid Credentials");
+			resp.setStatusCode(HttpStatus.BAD_REQUEST);
+			return ResponseEntity.badRequest().body(resp);
+		}
+
 		if (validator.validateEmptyOrNull(userName)) {
 			User u = usrService.getUser(userName);
 			if (null == u) {
@@ -72,6 +95,7 @@ public class UserController {
 				resp.setMessage(u.toString());
 				resp.setStatusCode(HttpStatus.OK);
 			}
+
 			return ResponseEntity.ok(resp);
 		} else {
 			resp.setMessage("UserName cannot be null or Empty");
