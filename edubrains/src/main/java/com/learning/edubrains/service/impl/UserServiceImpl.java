@@ -11,7 +11,6 @@ import com.learning.edubrains.model.User;
 import com.learning.edubrains.repo.IRolesRepo;
 import com.learning.edubrains.repo.IUserRepo;
 import com.learning.edubrains.service.IUserService;
-import com.learning.edubrains.utils.EduAppServiceException;
 
 @Service
 public class UserServiceImpl implements IUserService {
@@ -27,13 +26,13 @@ public class UserServiceImpl implements IUserService {
 	@Override
 	public void addUser(User user) {
 		// check if role is Valid
-		if (rolesRepo.findByRoleName(user.getRole().getRoleName()) != null) {
-			logger.info("Role:: " + rolesRepo.findByRoleName(user.getRole().getRoleName().toString()));
-			userRepo.save(user);
-		} else {
-			throw new EduAppServiceException("Role is Invalid");
-		}
-
+//		if (rolesRepo.findByRoleName(user.getRole().getRoleName()) != null) {
+//			logger.info("Role:: " + rolesRepo.findByRoleName(user.getRole().getRoleName().toString()));
+//			userRepo.save(user);
+//		} else {
+//			throw new EduAppServiceException("Role is Invalid");
+//		}
+		userRepo.save(user);
 	}
 
 	@Override
@@ -56,5 +55,10 @@ public class UserServiceImpl implements IUserService {
 			return getUser(sessionUser.getUserName());
 		}
 		return null;
+	}
+
+	@Override
+	public User getUserByEmail(String email) {
+		return userRepo.findByEmail(email);
 	}
 }

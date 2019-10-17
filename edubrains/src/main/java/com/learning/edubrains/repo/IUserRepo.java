@@ -6,7 +6,9 @@ import org.springframework.stereotype.Repository;
 import com.learning.edubrains.model.User;
 
 @Repository
-public interface IUserRepo extends MongoRepository<User, String>{
+public interface IUserRepo extends MongoRepository<User, String> {
 
 	User findByUserName(String userName);
+
+	User findByEmail(String email);
 }

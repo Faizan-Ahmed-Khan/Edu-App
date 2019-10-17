@@ -9,4 +9,6 @@ public interface IUserService {
 	User getUser(String userName);
 
 	User getLoggedInUser();
+
+	User getUserByEmail(String email);
 }
