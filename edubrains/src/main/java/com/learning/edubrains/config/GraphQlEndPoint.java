@@ -12,7 +12,6 @@ import javax.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import graphql.ExecutionResult;
-import graphql.GraphQL;
 import graphql.schema.GraphQLSchema;
 import graphql.servlet.AbstractGraphQLHttpServlet;
 import graphql.servlet.GraphQLInvocationInputFactory;
@@ -53,7 +52,7 @@ public class GraphQlEndPoint extends AbstractGraphQLHttpServlet {
 
 	@Override
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-		log.info("-----------------Inside doPOST-----------------");
+//		log.info("-----------------Inside doPOST-----------------");
 		GraphQLInvocationInputFactory invocationInputFactory = getInvocationInputFactory();
 		GraphQLObjectMapper graphQLObjectMapper = getGraphQLObjectMapper();
 		GraphQLQueryInvoker queryInvoker = getQueryInvoker();
@@ -67,7 +66,7 @@ public class GraphQlEndPoint extends AbstractGraphQLHttpServlet {
 
 			GraphQLSingleInvocationInput invocInput = invocationInputFactory.create(gReq, req);
 			query(queryInvoker, graphQLObjectMapper, invocInput, resp);
-			log.info("-----------------END doPOST-----------------");
+//			log.info("-----------------END doPOST-----------------");
 		} catch (Exception e) {
 			log.info("Bad GRAPHQL request: parsing failed", e);
 			resp.setStatus(STATUS_BAD_REQUEST);
@@ -76,14 +75,14 @@ public class GraphQlEndPoint extends AbstractGraphQLHttpServlet {
 
 	private void query(GraphQLQueryInvoker queryInvoker, GraphQLObjectMapper graphQLObjectMapper,
 			GraphQLSingleInvocationInput invocationInput, HttpServletResponse resp) throws IOException {
-		log.info("-----------------Inside query-----------------");
+//		log.info("-----------------Inside query-----------------");
 		ExecutionResult result = queryInvoker.query(invocationInput);
-		log.info("Result:: " + result);
+//		log.info("Result:: " + result);
 		resp.setContentType(APPLICATION_JSON_UTF8);
 		resp.setStatus(STATUS_BAD_REQUEST);
 		resp.setHeader("Access-Control-Allow-Origin", "*");
 		resp.setHeader("Access-Control-Allow-Headers", "Content-Type, Accept, X-Requested-With, remember-me");
 		resp.getWriter().write(graphQLObjectMapper.serializeResultAsJson(result));
-		log.info("-----------------END QUErY-----------------");
+//		log.info("-----------------END QUErY-----------------");
 	}
 }

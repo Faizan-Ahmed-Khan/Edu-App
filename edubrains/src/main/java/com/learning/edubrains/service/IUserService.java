@@ -4,9 +4,11 @@ import com.learning.edubrains.model.User;
 
 public interface IUserService {
 
-	void addUser(User user);
+	boolean addUser(User user);
 
 	User getUser(String userName);
 
 	User getLoggedInUser();
+
+	User getUserByEmail(String email);
 }

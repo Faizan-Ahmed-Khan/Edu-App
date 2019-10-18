@@ -1,22 +1,27 @@
 package com.learning.edubrains.model;
 
-import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.NotNull;
-
-import org.springframework.stereotype.Component;
-
 import lombok.Data;
 
 @Data
-@Component
 public class User {
 
 	private String id;
 
-	@NotEmpty(message = "UserName should not be Empty")
+//	@NotEmpty(message = "UserName should not be Empty")
 	private String userName;
 
-	@NotNull(message = "Role should not be null")
+//	@NotNull(message = "Role should not be null")
 	private Roles role;
+
+	private String email;
+
+	private String pwd;
+
+	public User(String userName, Roles role, String email, String pwd) {
+		this.userName = userName;
+		this.role = role;
+		this.email = email;
+		this.pwd = pwd;
+	}
 
 }
