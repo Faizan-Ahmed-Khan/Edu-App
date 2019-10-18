@@ -1,0 +1,50 @@
+=======
+GraphQL
+=======
+
+LOGIN -> localhost:8080/graphql
+------
+
+mutation{
+  LOGIN(auth:{email : "f@gmail.com", password : "Faiz123"}){
+    token
+    user{
+      userName
+      email
+      pwd
+      role{
+        roleName
+      }
+    }
+  }
+}
+
+LOGOUT -> localhost:8080/graphql
+-------
+
+{
+  LOGOUT
+}
+
+=======
+REST
+=======
+
+ADD USER -> localhost:8080/services/user (POST)
+----------
+
+{
+	"userName":"Paul1",
+	"role":{
+		"roleName":"User"
+	},
+	"email":"p@gmail.com",
+	"pwd":"Faiz1234"
+}
+
+
+GET USER -> localhost:8080/services/user?userName=Paul (GET)
+---------
+
+//No Body, only params
+
