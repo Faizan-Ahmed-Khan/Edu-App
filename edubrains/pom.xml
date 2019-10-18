@@ -72,17 +72,23 @@
 			<artifactId>jedis</artifactId>
 		</dependency>
 		<!-- spring-security-core -->
-		<!-- <dependency>
-			<groupId>org.springframework.security</groupId>
-			<artifactId>spring-security-core</artifactId>
-			<version>5.1.6.RELEASE</version>
-		</dependency> -->
-		 <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-security</artifactId>
-        </dependency>
+		<!-- <dependency> <groupId>org.springframework.security</groupId> <artifactId>spring-security-core</artifactId> 
+			<version>5.1.6.RELEASE</version> </dependency> -->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-security</artifactId>
+		</dependency>
 
-
+		<!-- https://mvnrepository.com/artifact/org.springframework/spring-aop -->
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-aop</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.aspectj</groupId>
+			<artifactId>aspectjweaver</artifactId>
+			<scope>compile</scope>
+		</dependency>
 
 		<dependency>
 			<groupId>org.springframework.boot</groupId>

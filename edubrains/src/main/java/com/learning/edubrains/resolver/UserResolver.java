@@ -1,5 +1,7 @@
 package com.learning.edubrains.resolver;
 
+import java.util.Optional;
+
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,7 +10,6 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 
 import com.learning.edubrains.model.AuthData;
-import com.learning.edubrains.model.Roles;
 import com.learning.edubrains.model.SessionUser;
 import com.learning.edubrains.model.SigninPayload;
 import com.learning.edubrains.model.User;
@@ -35,8 +36,7 @@ public class UserResolver {
 	private ValdatorUtils validator;
 
 	@GraphQLMutation(name = "LOGIN")
-	public SigninPayload signIn(AuthData auth) throws IllegalAccessException {
-		log.info("Login, payload:: " + auth.toString());
+	public SigninPayload signIn(AuthData auth) {
 		if (!validator.validateEmptyOrNull(auth.getEmail())) {
 			throw new EduAppServiceException("Email Cannot be Empty/null");
 		} else if (!validator.validateEmptyOrNull(auth.getPassword())) {
@@ -44,19 +44,14 @@ public class UserResolver {
 		}
 
 		User user = usrService.getUserByEmail(auth.getEmail());
-		if (null == user)
+		if (!Optional.ofNullable(user).isPresent())
 			throw new EduAppServiceException("User Does not Exist");
 		else if (user.getPwd().equals(auth.getPassword())) {
-//			//Persist the Session User in Redis
-//			SessionUser suser = new SessionUser(userName);
-//			repo.save(suser);
-//			return suser;
-
-			// Use Spring Security to Maintain Session
 			createSession(user.getUserName());
 			return new SigninPayload(user.getId(), user);
-		} else
+		} else {
 			throw new GraphQLException("Invalid Credentials");
+		}
 	}
 
 	@GraphQLQuery(name = "LOGOUT")
@@ -67,12 +62,12 @@ public class UserResolver {
 
 	}
 
-	@GraphQLMutation
-	public String createUser(String name, AuthData auth, Roles role) {
-		User newUser = new User(name, role, auth.getEmail(), auth.getPassword());
-		usrService.addUser(newUser);
-		return "User Added Successfully";
-	}
+//	@GraphQLMutation
+//	public String createUser(String name, AuthData auth, Roles role) {
+//		User newUser = new User(name, role, auth.getEmail(), auth.getPassword());
+//		usrService.addUser(newUser);
+//		return "User Added Successfully";
+//	}
 
 	private String createSession(String userName) {
 		SessionUser sessionUser = new SessionUser(userName);

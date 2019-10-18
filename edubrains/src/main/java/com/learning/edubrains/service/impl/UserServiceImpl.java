@@ -1,5 +1,7 @@
 package com.learning.edubrains.service.impl;
 
+import java.util.Optional;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,15 +26,16 @@ public class UserServiceImpl implements IUserService {
 	private Logger logger = LoggerFactory.getLogger(UserServiceImpl.class);
 
 	@Override
-	public void addUser(User user) {
-		// check if role is Valid
-//		if (rolesRepo.findByRoleName(user.getRole().getRoleName()) != null) {
-//			logger.info("Role:: " + rolesRepo.findByRoleName(user.getRole().getRoleName().toString()));
-//			userRepo.save(user);
-//		} else {
-//			throw new EduAppServiceException("Role is Invalid");
-//		}
-		userRepo.save(user);
+	public boolean addUser(User user) {
+		// check if user exists
+		User u = getUser(user.getUserName());
+		if (!Optional.ofNullable(u).isPresent()) {
+			userRepo.save(user);
+			return true;
+		} else {
+			return false;
+		}
+
 	}
 
 	@Override
@@ -43,7 +46,7 @@ public class UserServiceImpl implements IUserService {
 	@Override
 	public User getLoggedInUser() {
 		SessionUser sessionUser = null;
-		if (null != SecurityContextHolder.getContext().getAuthentication()) {
+		if (Optional.ofNullable(SecurityContextHolder.getContext().getAuthentication()).isPresent()) {
 			Object obj = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
 			if (obj instanceof String) {
@@ -51,7 +54,7 @@ public class UserServiceImpl implements IUserService {
 			} else {
 				sessionUser = (SessionUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 			}
-			logger.info("Session user:: " + sessionUser);
+			logger.info("Session user:: {} ", sessionUser);
 			return getUser(sessionUser.getUserName());
 		}
 		return null;

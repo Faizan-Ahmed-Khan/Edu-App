@@ -8,7 +8,7 @@ import org.springframework.stereotype.Component;
 public class ValdatorUtils {
 
 	public boolean validateEmptyOrNull(String obj) {
-		return (Optional.ofNullable(obj).isPresent() || obj.trim().isEmpty() ? false : true);
+		return (!Optional.ofNullable(obj).isPresent() || obj.trim().isEmpty() ? false : true);
 	}
 
 }
