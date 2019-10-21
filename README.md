@@ -4,12 +4,12 @@ An End to End E-learning app.
 Technology Used
 ================
 
-Java 1.8
-Spring Boot
-Spring AOP
-GraphQL
-RESTFul web services
-Redis
+Java 1.8,
+Spring Boot,
+Spring AOP,
+GraphQL,
+RESTFul web services,
+Redis,
 
 Important points
 =================
