@@ -11,12 +11,15 @@ import org.springframework.util.StreamUtils;
 @Configuration
 public class GraphQLTestConfiguration {
 
-//	@Value("classpath:src/test/resources/sign-in.graphql")
-//	private Resource signInPayloadFile;
-
 	@Bean
 	public String signInPayload() throws IOException {
 		return StreamUtils.copyToString(new ClassPathResource("sign-in.graphql").getInputStream(),
+				StandardCharsets.UTF_8);
+	}
+
+	@Bean
+	public String logoutPayload() throws IOException {
+		return StreamUtils.copyToString(new ClassPathResource("logout.graphql").getInputStream(),
 				StandardCharsets.UTF_8);
 	}
 
