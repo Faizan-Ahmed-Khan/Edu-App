@@ -1,0 +1,14 @@
+mutation {
+  LOGIN(auth: {email: "f@gmail.com", password: "Faiz123"}) {
+    user {
+      id
+      userName
+      email
+      pwd
+      role {
+        roleName
+        get_id
+      }
+    }
+  }
+}
