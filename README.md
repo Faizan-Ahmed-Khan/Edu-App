@@ -10,6 +10,7 @@ Spring AOP,
 GraphQL,
 RESTFul web services,
 Redis,
+Spring Integration Test
 
 Important points
 =================
